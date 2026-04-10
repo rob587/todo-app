@@ -13,11 +13,10 @@
   <h1>{{ grandeTitolo }}</h1>
 
   <div class="div">
-    <div *ngFor="let todo of todos"></div>
-    <h2>Task</h2>
-    <!-- <p>{{}}</p>
-    <p>{{}}</p>
-    <p>{{}}</p> -->
+    <div *ngFor="let todo of todos">
+      <p>{{ todo.nome }}</p>
+      <p>{{ todo.status }}</p>
+    </div>
   </div>
 
   <p>Totale: {{ contaTask() }}</p>
