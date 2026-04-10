@@ -50,9 +50,12 @@ export class TodoService {
   nuovoStatus = '';
 
   aggiungiTodo(nome: string) {
-    if (this.taskNuova.trim() === '') {
-      this.taskAggiunta = true;
-    }
+    const newId = Math.max(...this.todos.map((t) => t.id), 0) + 1;
+    this.todos.push({
+      id: newId,
+      nome: nome,
+      status: false,
+    });
   }
 
   eliminaTodo(id: number): void {
@@ -61,15 +64,18 @@ export class TodoService {
 
   isItCompleted = false;
 
-  completaTask() {
-    this.isItCompleted = true;
+  completaTask(id: number): void {
+    const todo = this.todos.find((t) => t.id === id);
+    if (todo) {
+      todo.status = !todo.status;
+    }
   }
 
   contaTask() {
     return this.todos.length;
   }
 
-  contaCompletati() {
-    return;
+  contaCompletati(): number {
+    return this.todos.filter((t) => t.status).length;
   }
 }

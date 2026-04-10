@@ -16,6 +16,10 @@
     <div *ngFor="let todo of todos">
       <p>{{ todo.nome }}</p>
       <p>{{ todo.status }}</p>
+
+      <p [ngClass]="{ completato: todo.status }">{{ todo.nome }}</p>
+      <input type="checkbox" (change)="completaTodo(todo.id)" [checked]="todo.status" />
+      <button (click)="eliminaTodo(todo.id)">❌ Elimina</button>
     </div>
   </div>
 

@@ -30,9 +30,9 @@ export class App {
     this.todoService.eliminaTodo(id);
   }
 
-  // completaTodo(id: number) {
-  //   this.todoService.completaTodo(id);
-  // }
+  completaTodo(id: number) {
+    this.todoService.completaTask();
+  }
 
   contaTask(): number {
     return this.todoService.contaTask();
