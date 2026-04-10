@@ -10,7 +10,18 @@
 <style></style>
 
 <main class="main">
-  <h1>{{}}</h1>
+  <h1>{{ grandeTitolo }}</h1>
+
+  <div class="div">
+    <div *ngFor="let todo of todos"></div>
+    <h2>Task</h2>
+    <!-- <p>{{}}</p>
+    <p>{{}}</p>
+    <p>{{}}</p> -->
+  </div>
+
+  <p>Totale: {{ contaTask() }}</p>
+  <p>Completati: {{ contaCompletati() }}</p>
 </main>
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->

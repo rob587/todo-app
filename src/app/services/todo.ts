@@ -55,5 +55,21 @@ export class TodoService {
     }
   }
 
-  eliminaTodo(id: number) {}
+  eliminaTodo(id: number): void {
+    this.todos = this.todos.filter((t) => t.id !== id);
+  }
+
+  isItCompleted = false;
+
+  completaTask() {
+    this.isItCompleted = true;
+  }
+
+  contaTask() {
+    return this.todos.length;
+  }
+
+  contaCompletati() {
+    return;
+  }
 }
