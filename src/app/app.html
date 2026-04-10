@@ -7,25 +7,200 @@
 <!-- * * * * * * * to get started with your project! * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
-<style></style>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-<main class="main">
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+
+  h1 {
+    color: #667eea;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .form-section {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  input[type='text'] {
+    flex: 1;
+    padding: 0.8rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+
+  input[type='text']:focus {
+    outline: none;
+    border-color: #667eea;
+  }
+
+  button {
+    padding: 0.8rem 1.5rem;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  button:hover {
+    background: #5568d3;
+    transform: translateY(-2px);
+  }
+
+  .error-message {
+    color: #ef4444;
+    background: #fee2e2;
+    padding: 0.8rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .success-message {
+    color: #10b981;
+    background: #d1fae5;
+    padding: 0.8rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .todo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .todo-item {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+  }
+
+  .todo-item input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+
+  .todo-text {
+    flex: 1;
+    font-size: 1rem;
+    color: #333;
+  }
+
+  .todo-item.completato .todo-text {
+    text-decoration: line-through;
+    color: #999;
+  }
+
+  .delete-btn {
+    padding: 0.5rem 1rem;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .delete-btn:hover {
+    background: #dc2626;
+  }
+
+  .stats {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid #e2e8f0;
+    text-align: center;
+  }
+
+  .stats p {
+    font-size: 1.1rem;
+    color: #475569;
+    margin: 0.5rem 0;
+  }
+
+  .stats strong {
+    color: #667eea;
+    font-weight: 700;
+  }
+
+  .no-todos {
+    text-align: center;
+    color: #999;
+    padding: 2rem;
+    font-size: 1.1rem;
+  }
+</style>
+
+<div class="container">
   <h1>{{ grandeTitolo }}</h1>
 
-  <div class="div">
-    <div *ngFor="let todo of todos">
-      <p>{{ todo.nome }}</p>
-      <p>{{ todo.status }}</p>
+  <!-- FORM PER AGGIUNGERE TODO -->
+  <div class="form-section">
+    <input type="text" [(ngModel)]="taskNuova" placeholder="Aggiungi un nuovo task..." />
+    <button (click)="aggiungiTodo()">Aggiungi</button>
+  </div>
 
-      <p [ngClass]="{ completato: todo.status }">{{ todo.nome }}</p>
-      <input type="checkbox" (change)="completaTodo(todo.id)" [checked]="todo.status" />
-      <button (click)="eliminaTodo(todo.id)">❌ Elimina</button>
+  <!-- MESSAGGIO DI ERRORE -->
+  <div *ngIf="taskError" class="error-message">❌ Il task non può essere vuoto!</div>
+
+  <!-- MESSAGGIO DI SUCCESSO -->
+  <div *ngIf="taskAggiunta" class="success-message">✅ Task aggiunto con successo!</div>
+
+  <!-- LISTA DI TODO -->
+  <div *ngIf="todos.length > 0; else noTodos">
+    <div class="todo-list">
+      <div *ngFor="let todo of todos" class="todo-item" [ngClass]="{ completato: todo.status }">
+        <input type="checkbox" [checked]="todo.status" (change)="completaTodo(todo.id)" />
+        <span class="todo-text">{{ todo.nome }}</span>
+        <button class="delete-btn" (click)="eliminaTodo(todo.id)">🗑️ Elimina</button>
+      </div>
     </div>
   </div>
 
-  <p>Totale: {{ contaTask() }}</p>
-  <p>Completati: {{ contaCompletati() }}</p>
-</main>
+  <!-- SE NON CI SONO TODO -->
+  <ng-template #noTodos>
+    <div class="no-todos">📝 Non hai ancora aggiunto nessun task!</div>
+  </ng-template>
+
+  <!-- STATISTICHE -->
+  <div class="stats">
+    <p>
+      Totale task: <strong>{{ contaTask() }}</strong>
+    </p>
+    <p>
+      Completati: <strong>{{ contaCompletati() }}</strong>
+    </p>
+  </div>
+</div>
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
