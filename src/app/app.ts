@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { TodoService } from './services/todo';
+import { Todo, TodoService } from './services/todo';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +9,20 @@ import { TodoService } from './services/todo';
   styleUrl: './app.css',
 })
 export class App {
-  protected readonly title = signal('todo-app');
+  taskNuova = '';
+  constructor(private todoService: TodoService) {}
+
+  get todos(): Todo[] {
+    return this.todoService.getTodos();
+  }
+  aggiungiTodo() {
+    if (this.taskNuova.trim() === '') return;
+
+    this.todoService.aggiungiTodo(this.taskNuova);
+    this.taskNuova = '';
+  }
+
+  eliminaTodo(id: number) {
+    this.todoService.eliminaTodo(id);
+  }
 }

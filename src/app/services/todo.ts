@@ -54,4 +54,6 @@ export class TodoService {
       this.taskAggiunta = true;
     }
   }
+
+  eliminaTodo(id: number) {}
 }
